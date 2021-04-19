@@ -2,6 +2,10 @@
 
 double Selection::Select(int left, int right, int i)
 {
+	if (left==right)
+	{
+		return arr[i];
+	}
 	int pivot; //location of pivot
 	int leftPart; //size of part left ot pivot (including pivot)
 
@@ -32,17 +36,21 @@ Selection::~Selection()
 	delete this->arr;
 }
 
-int Selection::Partition(int l, int r)
+int Selection::Partition(int left, int right)
 {
-	int x = this->arr[r], i = l;
-	for (int j = l; j <= r - 1; j++) {
-		if (this->arr[j] <= x) {
-			swap(i, j);
+	double pivot = arr[right];
+
+	int i = (left - 1);
+	for (int j = left; j <= right - 1; j++)
+	{
+		if (arr[j] <= pivot)
+		{
 			i++;
+			Swap(i, j);
 		}
 	}
-	swap(i, r);
-	return i;
+	Swap(i + 1, right);
+	return i + 1;
 	/*if (left == right)	//Stop condition 
 		return left;
 

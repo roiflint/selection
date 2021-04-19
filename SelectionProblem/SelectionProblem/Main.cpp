@@ -1,6 +1,6 @@
 #include "InsertionSort.h"
 #include "Selection.h"
-
+#include "Fives.h"
 
 int main()
 {
@@ -21,12 +21,15 @@ int main()
 	
 	InsertionSort Is(arr, i, size);
 	Selection Sel(arr, i, size);
+	fives Five(arr, i, size);
 
 	cout << "The magic number is(Insertion sort) : " << Is.Sort(i) << endl;
 	cout << "The magic number is(Selection) : " << Sel.Select(0, size-1, i) << endl;
+	cout << "The magic number is(5) : " << Five.FivesSort(0,(size-1),i) << endl;
 	
+	fives timeFives(arr, i, size);
 	Is.tellTime();
 	Sel.tellTime();
-
+	timeFives.tellTime();
 }
 

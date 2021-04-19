@@ -1,21 +1,14 @@
 #include "Fives.h"
 #include "Selection.h"
-fives::fives(int N, int I)
+fives::fives(double* ARR,int I, int N)
 {
-	if (N%5!=0)
-	{
-		this->realSize = N + N % 5;
-		this->arr = new double[this->realSize];
-		this->n = N;
-		this->i = I;
-	}
-	else
-	{
 		this->arr = new double[N];
 		this->n = N;
 		this->i = I;
-		this->realSize = N;
-	}
+		for (int i = 0; i < N; i++)
+		{
+			this->arr[i] = ARR[i];
+		}
 }
 
 fives::~fives()
@@ -34,7 +27,7 @@ void fives::tellTime()
 	// Calculating total time taken by the program.
 	double time_taken = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 	time_taken *= 1e-9;
-	cout << "Time taken by function <Selection> is : " << fixed
+	cout << "Time taken by function <5> is : " << fixed
 		<< time_taken << setprecision(9);
 	cout << " sec" << endl;
 }
@@ -46,35 +39,27 @@ void fives::Swap(int num1, int num2)
 	this->arr[num2] = temp;
 }
 
-void fives::Insertion(double* ARR)
+int fives::Partition(int left, int right)
 {
-	for (int i = 0; i < this->n; i++)
-	{
-		this->arr[i] = ARR[i];
-	}
-	for (int i = this->n; i < this->realSize; i++)
-	{
-		this->arr[i] = 0;
-	}
-}
+	double pivot = arr[right];
 
-int fives::Partition(int l, int r)
-{
-	int x = this->arr[r], i = l;
-	for (int j = l; j <= r - 1; j++) {
-		if (this->arr[j] <= x) {
-			swap(i, j);
+	int i = (left - 1);
+	for (int j = left; j <= right - 1; j++)
+	{
+		if (arr[j] <= pivot)
+		{
 			i++;
+			Swap(i, j);
 		}
 	}
-	swap(i, r);
-	return i;
+	Swap(i + 1, right);
+	return i + 1;
 }
 
 void fives::BubbleSort(int l, int r)
 {
 	bool swapped;
-	for (int i = l; i < r; i++)
+	for (int i = 0; i < r-l+1; i++)
 	{
 		swapped = false;
 		for (int j = l; j < r-i; j++)
@@ -92,36 +77,86 @@ void fives::BubbleSort(int l, int r)
 	}
 }
 
-int fives::FivesSort(int left, int right, int i, int k)
+double fives::FivesSort(int left, int right, int inx, int k)
 {
-	double* B = new double[this->realSize];
-	int z = 0;
-	for (int i = 0; i < this->realSize/5; i+=5)
+	/*if (this->realSize%5 != 0)
 	{
-		int j = i + 4;
-		BubbleSort(i, j);
-		B[z] = this->arr[i + 2];
-		z++;
-	}
-	Selection* s = new Selection(B,i,this->realSize);
-	double middle = s->Select(0, this->realSize, this->realSize / 2);
-	i = 0;
-	while (middle != this->arr[i])
+		int n = this->realSize;
+		this->realSize = this->realSize + (5 - (this->realSize % 5));
+		double* tmp = new double[this->realSize];
+		for (int i = 0; i < n; i++)
+		{
+			tmp[i] = this->arr[i];
+		}
+		for (int i = n; i < this->realSize; i++)
+		{
+			tmp[i] = 0;
+		}
+		delete[] arr;
+		this->arr = tmp;
+	}*/
+	int size;
+	if (this->n%5!=0 && this->n > 5)
 	{
-		i++;
-	}
-	Swap(i, 0);
-	k = Partition(0, this->realSize);
-	if (i > k)
-	{
-		return FivesSort(k + 1, right, i - k);
-	}
-	else if(i<k)
-	{
-		return FivesSort(left, k - 1, i);
+		size = this->n / 5 + 1;
 	}
 	else
 	{
-		return this->arr[i];
+		size = this->n / 5;
 	}
+	double *B = new double[size];
+	int z = 0;
+	for (int i = left; i <= right; i+=5)
+	{
+		int j,place;
+		if (i+4 <= right)
+		{
+			j = i + 4;
+		}
+		else
+		{
+			j = right;
+		}
+		BubbleSort(i, j);
+		place = j - i + 1;
+		if(place%5==0)
+		{
+			B[z] = this->arr[(i+2)];
+		}
+		else if(place%3 == 0 || place == 4)
+		{
+			B[z] = this->arr[(i + 1)];
+		}
+		else
+		{
+			B[z] = this->arr[(i)];
+		}
+		z++;
+	}
+	Selection* s = new Selection(B, z / 2,z);
+	double middle = s->Select(0, z-1, z / 2);
+	int location = left, i=0;
+	while (middle != this->arr[location])
+	{
+		i++;
+		location++;
+	}
+	Swap(i, right-1);
+	k = Partition(left, right-1);
+	if (inx > k)
+	{
+		setN(n - (k+1-left));
+		return FivesSort(k + 1, right, inx - k-1);
+	}
+	else if(inx<k)
+	{
+		setN(n - (right - k+1));
+		return FivesSort(left, k - 1, inx);
+	}
+	else
+	{
+		return this->arr[inx-1+left];
+	}
+
+
 }
