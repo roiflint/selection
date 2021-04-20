@@ -1,11 +1,9 @@
 #include "Selection.h"
+#include <fstream>
 
 double Selection::Select(int left, int right, int i)
 {
-	if (left==right)
-	{
-		return arr[i];
-	}
+	
 	int pivot; //location of pivot
 	int leftPart; //size of part left ot pivot (including pivot)
 
@@ -36,25 +34,13 @@ Selection::~Selection()
 	delete this->arr;
 }
 
-int Selection::Partition(int left, int right)
+int Selection::Partition(int left, int right, bool isLeft)
 {
-	double pivot = arr[right];
 
-	int i = (left - 1);
-	for (int j = left; j <= right - 1; j++)
-	{
-		if (arr[j] <= pivot)
-		{
-			i++;
-			Swap(i, j);
-		}
-	}
-	Swap(i + 1, right);
-	return i + 1;
-	/*if (left == right)	//Stop condition 
+	if (left == right)	// Stop condition 
 		return left;
 
-	if (isLeft)
+	if (isLeft)		    // if pivot is in the left half of the array			
 	{
 		if (arr[left] > arr[right])
 		{
@@ -66,7 +52,7 @@ int Selection::Partition(int left, int right)
 			Partition(left, right - 1, true);
 		}
 	}
-	else
+	else               // if pivot is in the right half of the array
 	{
 		if (arr[left] < arr[right])
 		{
@@ -75,10 +61,9 @@ int Selection::Partition(int left, int right)
 		else
 		{
 			Swap(left, right);
-			Partition(left, right -1, true);
+			Partition(left, right - 1, true);
 		}
-	}*/
-
+	}
 }
 
 void Selection::Swap(int num1, int num2)
@@ -107,15 +92,10 @@ void Selection::tellTime()
 	// Calculating total time taken by the program.
 	double time_taken = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 	time_taken *= 1e-9;
-	cout << "Time taken by function <Selection> is : " << fixed
+
+	ofstream myfile("Measure.txt", ios::app); // The name of the file
+	myfile << "Time taken by function <Selection> is : " << fixed
 		<< time_taken << setprecision(9);
-	cout << " sec" << endl;
+	myfile << " sec" << endl;
+	myfile.close();
 }
-
-void Selection::printArr()
-{
-	for (int i = 0; i < this->n; i++)
-		cout << this->arr[i] << " ";
-	cout << endl;
-}
-

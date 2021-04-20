@@ -1,5 +1,7 @@
 #include "Fives.h"
 #include "Selection.h"
+#include <fstream>
+
 fives::fives(double* ARR,int I, int N)
 {
 		this->arr = new double[N];
@@ -16,21 +18,6 @@ fives::~fives()
 	delete this->arr;
 }
 
-void fives::tellTime()
-{
-	auto start = chrono::high_resolution_clock::now();
-	// unsync the I/O of C and C++.
-	ios_base::sync_with_stdio(false);
-	fives::FivesSort(0, (this->n - 1), this->i);// Here you put the name of the function you wish to measure)
-	auto end = chrono::high_resolution_clock::now();
-
-	// Calculating total time taken by the program.
-	double time_taken = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
-	time_taken *= 1e-9;
-	cout << "Time taken by function <5> is : " << fixed
-		<< time_taken << setprecision(9);
-	cout << " sec" << endl;
-}
 
 void fives::Swap(int num1, int num2)
 {
@@ -39,21 +26,36 @@ void fives::Swap(int num1, int num2)
 	this->arr[num2] = temp;
 }
 
-int fives::Partition(int left, int right)
+int fives::Partition(int left, int right, bool isLeft)
 {
-	double pivot = arr[right];
+	
+	if (left == right)	//Stop condition 
+		return left;
 
-	int i = (left - 1);
-	for (int j = left; j <= right - 1; j++)
+	if (isLeft)
 	{
-		if (arr[j] <= pivot)
+		if (arr[left] > arr[right])
 		{
-			i++;
-			Swap(i, j);
+			Swap(left, right);
+			Partition(left + 1, right, false);
+		}
+		else
+		{
+			Partition(left, right - 1, true);
 		}
 	}
-	Swap(i + 1, right);
-	return i + 1;
+	else
+	{
+		if (arr[left] < arr[right])
+		{
+			Partition(left + 1, right, false);
+		}
+		else
+		{
+			Swap(left, right);
+			Partition(left, right - 1, true);
+		}
+	}
 }
 
 void fives::BubbleSort(int l, int r)
@@ -79,23 +81,8 @@ void fives::BubbleSort(int l, int r)
 
 double fives::FivesSort(int left, int right, int inx, int k)
 {
-	/*if (this->realSize%5 != 0)
-	{
-		int n = this->realSize;
-		this->realSize = this->realSize + (5 - (this->realSize % 5));
-		double* tmp = new double[this->realSize];
-		for (int i = 0; i < n; i++)
-		{
-			tmp[i] = this->arr[i];
-		}
-		for (int i = n; i < this->realSize; i++)
-		{
-			tmp[i] = 0;
-		}
-		delete[] arr;
-		this->arr = tmp;
-	}*/
-	int size;
+	int size;	// size of array B 
+
 	if (this->n%5!=0 && this->n > 5)
 	{
 		size = this->n / 5 + 1;
@@ -104,12 +91,14 @@ double fives::FivesSort(int left, int right, int inx, int k)
 	{
 		size = this->n / 5;
 	}
+
 	double *B = new double[size];
-	int z = 0;
-	for (int i = left; i <= right; i+=5)
+	int z = 0; // index in the array B
+
+	for (int i = left; i <= right; i += 5)	// entering the numbers into array B
 	{
-		int j,place;
-		if (i+4 <= right)
+		int j, sizeOfSubArray;
+		if (i + 4 <= right) // sub-arrays of A
 		{
 			j = i + 4;
 		}
@@ -118,12 +107,12 @@ double fives::FivesSort(int left, int right, int inx, int k)
 			j = right;
 		}
 		BubbleSort(i, j);
-		place = j - i + 1;
-		if(place%5==0)
+		sizeOfSubArray = j - i + 1;
+		if (sizeOfSubArray % 5 == 0) // 5 numbers in the array B
 		{
-			B[z] = this->arr[(i+2)];
+			B[z] = this->arr[(i + 2)]; // place the middle number into the array B
 		}
-		else if(place%3 == 0 || place == 4)
+		else if (sizeOfSubArray == 3 || sizeOfSubArray == 4)	
 		{
 			B[z] = this->arr[(i + 1)];
 		}
@@ -133,30 +122,60 @@ double fives::FivesSort(int left, int right, int inx, int k)
 		}
 		z++;
 	}
-	Selection* s = new Selection(B, z / 2,z);
-	double middle = s->Select(0, z-1, z / 2);
+
+	Selection* s = new Selection(B, z / 2,z); // dummy variable to find the middle of the array
+
+	int half = z / 2;		// In case if B array has only one item
+	if (half == 0)
+	{
+		half++;
+	}
+
+	double middle = s->Select(0, z-1, half);
 	int location = left, i=0;
 	while (middle != this->arr[location])
 	{
 		i++;
 		location++;
 	}
-	Swap(i, right-1);
-	k = Partition(left, right-1);
-	if (inx > k)
+
+	Swap(left, i + left); // putting the middle as pivot
+	k = Partition(left, right) - left;
+
+	delete s;
+	delete[] B;
+
+	if (inx > k + 1)
 	{
-		setN(n - (k+1-left));
-		return FivesSort(k + 1, right, inx - k-1);
+		return FivesSort(k + 1 + left, right, inx - k-1);
 	}
-	else if(inx<k)
+	else if(inx < k + 1)
 	{
-		setN(n - (right - k+1));
-		return FivesSort(left, k - 1, inx);
+		return FivesSort(left, k + left - 1, inx);
 	}
 	else
 	{
 		return this->arr[inx-1+left];
 	}
 
+}
 
+void fives::tellTime()
+{
+	auto start = chrono::high_resolution_clock::now();
+	// unsync the I/O of C and C++.
+	ios_base::sync_with_stdio(false);
+	fives::FivesSort(0, (this->n - 1), this->i);// Here you put the name of the function you wish to measure)
+	auto end = chrono::high_resolution_clock::now();
+
+	// Calculating total time taken by the program.
+	double time_taken = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
+	time_taken *= 1e-9;
+	
+
+	ofstream myfile("Measure.txt", ios::app);
+	myfile << "Time taken by function <Quintuplet algorithm> is : " << fixed
+		<< time_taken << setprecision(9);
+	myfile << " sec" << endl;
+	myfile.close();
 }

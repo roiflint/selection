@@ -1,14 +1,16 @@
 #include "InsertionSort.h";
-InsertionSort::InsertionSort(double* ARR, int I, int N)
+#include <fstream>
+
+InsertionSort::InsertionSort(double* ARR, int I, int N) // ctor
 {
 	this->n = N;
 	this->i = I;
 	this->arr = new double[N];
 
-	Insertion(ARR);
+	Insertion(ARR);	// insert the original array
 }
 
-InsertionSort::~InsertionSort()
+InsertionSort::~InsertionSort()							// dtor
 {
 	delete arr;
 }
@@ -32,7 +34,7 @@ double InsertionSort::Sort(int I)
 	return this->arr[I-1];
 }
 
-void InsertionSort::Insertion(double* ARR)
+void InsertionSort::Insertion(double* ARR)	
 {
 	for (int i = 0; i < this->n; i++)
 	{
@@ -51,7 +53,11 @@ void InsertionSort::tellTime()
 	// Calculating total time taken by the program.
 	double time_taken = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 	time_taken *= 1e-9;
-	cout << "Time taken by function <InsertionSort> is : " << fixed
+	
+
+	ofstream myfile("Measure.txt");
+	myfile << "Time taken by function <Insertion Sort> is : " << fixed
 		<< time_taken << setprecision(9);
-	cout << " sec" << endl;
+	myfile << " sec" << endl;
+	myfile.close();
 }
