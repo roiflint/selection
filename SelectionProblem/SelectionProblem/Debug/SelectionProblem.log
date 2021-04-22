@@ -1,23 +1,19 @@
 ﻿  Fives.cpp
-C:\Users\rotan\Documents\GitHub\ProjectNum2\selection\SelectionProblem\SelectionProblem\Fives.cpp(172,20): warning C4244: 'initializing': conversion from '_Rep' to 'double', possible loss of data
+C:\Users\rotan\Documents\GitHub\ProjectNum2\selection\SelectionProblem\SelectionProblem\Fives.cpp(181,20): warning C4244: 'initializing': conversion from '_Rep' to 'double', possible loss of data
           with
           [
               _Rep=__int64
           ]
-  InsertionSort.cpp
-C:\Users\rotan\Documents\GitHub\ProjectNum2\selection\SelectionProblem\SelectionProblem\InsertionSort.cpp(1,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\rotan\Documents\GitHub\ProjectNum2\selection\SelectionProblem\SelectionProblem\InsertionSort.cpp(54,20): warning C4244: 'initializing': conversion from '_Rep' to 'double', possible loss of data
-          with
-          [
-              _Rep=__int64
-          ]
+  Main.cpp
+C:\Users\rotan\Documents\GitHub\ProjectNum2\selection\SelectionProblem\SelectionProblem\Main.cpp(88,14): warning C4018: '>=': signed/unsigned mismatch
+C:\Users\rotan\Documents\GitHub\ProjectNum2\selection\SelectionProblem\SelectionProblem\Main.cpp(88,37): warning C4018: '<': signed/unsigned mismatch
   Selection.cpp
-C:\Users\rotan\Documents\GitHub\ProjectNum2\selection\SelectionProblem\SelectionProblem\Selection.cpp(93,20): warning C4244: 'initializing': conversion from '_Rep' to 'double', possible loss of data
+C:\Users\rotan\Documents\GitHub\ProjectNum2\selection\SelectionProblem\SelectionProblem\Selection.cpp(92,20): warning C4244: 'initializing': conversion from '_Rep' to 'double', possible loss of data
           with
           [
               _Rep=__int64
           ]
   Generating Code...
-C:\Users\rotan\Documents\GitHub\ProjectNum2\selection\SelectionProblem\SelectionProblem\Selection.cpp(67): warning C4715: 'Selection::Partition': not all control paths return a value
+C:\Users\rotan\Documents\GitHub\ProjectNum2\selection\SelectionProblem\SelectionProblem\Selection.cpp(66): warning C4715: 'Selection::Partition': not all control paths return a value
 C:\Users\rotan\Documents\GitHub\ProjectNum2\selection\SelectionProblem\SelectionProblem\Fives.cpp(59): warning C4715: 'fives::Partition': not all control paths return a value
   SelectionProblem.vcxproj -> C:\Users\rotan\Documents\GitHub\ProjectNum2\selection\SelectionProblem\Debug\SelectionProblem.exe

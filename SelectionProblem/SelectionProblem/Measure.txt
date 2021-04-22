@@ -1,3 +1,2 @@
-Time taken by function <Insertion Sort> is : 0.000001 sec
-Time taken by function <Selection> is : 0.000023 sec
-Time taken by function <Quintuplet algorithm> is : 0.000040 sec
+Time taken by function <Insertion Sort> is : 0.000003 sec
+Time taken by function <Selection> is : 0.000003 sec

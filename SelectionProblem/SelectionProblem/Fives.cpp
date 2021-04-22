@@ -87,7 +87,7 @@ double fives::FivesSort(int left, int right, int inx)
 	if (currentSize <= 5)					// Edge case - if size of an array A is <= 5
 	{
 		BubbleSort(left, right);
-		return (arr[inx - 1] + left);
+		return (arr[inx - 1 + left]);
 	}
 
 	if (currentSize % 5 != 0)
