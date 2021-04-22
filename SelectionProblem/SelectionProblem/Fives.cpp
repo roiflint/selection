@@ -79,17 +79,24 @@ void fives::BubbleSort(int l, int r)
 	}
 }
 
-double fives::FivesSort(int left, int right, int inx, int k)
+double fives::FivesSort(int left, int right, int inx)
 {
 	int size;	// size of array B 
+	int currentSize = (right - left + 1);	// Current size of the array A
 
-	if (this->n%5!=0 && this->n > 5)
+	if (currentSize <= 5)					// Edge case - if size of an array A is <= 5
 	{
-		size = this->n / 5 + 1;
+		BubbleSort(left, right);
+		return (arr[inx - 1] + left);
+	}
+
+	if (currentSize % 5 != 0)
+	{
+		size = currentSize / 5 + 1;
 	}
 	else
 	{
-		size = this->n / 5;
+		size = currentSize / 5;
 	}
 
 	double *B = new double[size];
@@ -106,7 +113,9 @@ double fives::FivesSort(int left, int right, int inx, int k)
 		{
 			j = right;
 		}
+
 		BubbleSort(i, j);
+
 		sizeOfSubArray = j - i + 1;
 		if (sizeOfSubArray % 5 == 0) // 5 numbers in the array B
 		{
@@ -140,7 +149,7 @@ double fives::FivesSort(int left, int right, int inx, int k)
 	}
 
 	Swap(left, i + left); // putting the middle as pivot
-	k = Partition(left, right) - left;
+	int k = Partition(left, right) - left;
 
 	delete s;
 	delete[] B;

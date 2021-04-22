@@ -41,18 +41,14 @@ int main()
 			cout << "Insertion sort i'th element: " << Is.Sort(i) << endl;
 			cout << "Selection i'th element: " << Sel.Select(0, size - 1, i) << endl;
 			cout << "Quintuplet algorithm i'th element: " << Five.FivesSort(0, (size - 1), i) << endl;
-
-
-			
 			
 			/*For the purpose of writing to file the time of the algorithm:*/
 
-			/*fives timeFives(arr, i, size);*/
 			Is.tellTime();
 			Sel.tellTime();
 			Five.tellTime();
 
-			
+			delete[]arr;
 		}
 	}
 

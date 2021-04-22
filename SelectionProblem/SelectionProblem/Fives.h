@@ -20,7 +20,7 @@ public:
 
 	/*methods*/
 	int Partition(int l, int r, bool isLeft = true);
-	double FivesSort(int left, int right, int i, int k=-1);
+	double FivesSort(int left, int right, int i);
 	void BubbleSort(int left, int right);
 	void Swap(int num1, int num2);
 	void tellTime();	//Calculating the time of the program

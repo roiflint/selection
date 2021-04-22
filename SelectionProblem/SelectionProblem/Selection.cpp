@@ -26,7 +26,6 @@ Selection::Selection(double* ARR, int I, int N)
 	this->i = I;
 
 	Insertion(ARR);
-
 }
 
 Selection::~Selection()
